@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #c2652a;
+    --color-primary-hover: #a8551f;
+    --color-background: #faf5ee;
+    --color-tertiary: #8c3c3c;
+    --color-border: #d8d0c8;
+    --color-text-dark: #1a1a1a;
+    --color-text-muted: #6b5e53;
+    --color-surface: #ffffff;
+    --color-surface-container: #f5efe7;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-text-dark font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-3 rounded-btn font-sans font-semibold
+           transition-all duration-300 hover:bg-primary-hover hover:shadow-soft-md
+           active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply border border-border text-text-dark px-6 py-3 rounded-btn font-sans font-semibold
+           transition-all duration-300 hover:border-primary hover:text-primary
+           active:scale-[0.98];
+  }
+
+  .section-padding {
+    @apply px-5 py-16 md:px-8 lg:px-16 xl:px-24 md:py-24;
+  }
+
+  .container-max {
+    @apply max-w-7xl mx-auto;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

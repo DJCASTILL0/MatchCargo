@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   // "productor" o "comprador"
+  country   String   @default("Bolivia")
+  createdAt DateTime @default(now())
+  
+  products  Product[]
+  matchesAsProducer Match[] @relation("ProducerMatches")
+  matchesAsBuyer    Match[] @relation("BuyerMatches")
+  messages          Message[]
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  producerId  String
+  name        String
+  category    String
+  price       String
+  cert        String
+  img         String
+  createdAt   DateTime @default(now())
+
+  producer    User     @relation(fields: [producerId], references: [id])
+  matches     Match[]
+}
+
+model Match {
+  id          String   @id @default(cuid())
+  productId   String
+  producerId  String
+  buyerId     String
+  status      String   @default("PENDING") // PENDING, ACCEPTED, REJECTED
+  createdAt   DateTime @default(now())
+
+  product     Product  @relation(fields: [productId], references: [id])
+  producer    User     @relation("ProducerMatches", fields: [producerId], references: [id])
+  buyer       User     @relation("BuyerMatches", fields: [buyerId], references: [id])
+  messages    Message[]
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  matchId   String
+  senderId  String
+  text      String
+  createdAt DateTime @default(now())
+
+  match     Match    @relation(fields: [matchId], references: [id])
+  sender    User     @relation(fields: [senderId], references: [id])
+}
